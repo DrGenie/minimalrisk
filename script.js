@@ -8,11 +8,11 @@ function calculate() {
   const b_fatigue   = parseFloat(document.getElementById("b_fatigue").value);
   const b_nausea    = parseFloat(document.getElementById("b_nausea").value);
 
-  // Simple linear utility function with equal weights
-  const beta = -2.0; // risk aversion coefficient
+  // Simple linear utility function (risk lowers utility)
+  const beta = -2.0;
   const Ua = beta * (a_infection + a_fatigue + a_nausea);
   const Ub = beta * (b_infection + b_fatigue + b_nausea);
-  const Uq = 0; // status quo baseline
+  const Uq = 0; // baseline for status quo
 
   // Multinomial logit probabilities
   const expUa = Math.exp(Ua);
@@ -26,8 +26,8 @@ function calculate() {
 
   // Display results
   document.getElementById("output").innerHTML = `
-    Probability of choosing Treatment A: <b>${Pa}</b><br>
-    Probability of choosing Treatment B: <b>${Pb}</b><br>
-    Probability of choosing Status Quo: <b>${Pq}</b>
+    Treatment A: <b>${Pa}</b><br>
+    Treatment B: <b>${Pb}</b><br>
+    Status Quo: <b>${Pq}</b>
   `;
 }
