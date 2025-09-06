@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MS Treatment Minimal Risk Calculator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>MS Treatment Minimal Risk Calculator</h1>
+    <p>Enter risk levels (0–1) for each treatment. The tool calculates the probability of choosing each option.</p>
+
+    <form id="risk-form">
+      <h2>Treatment A</h2>
+      <label>Infection risk:
+        <input type="number" step="0.01" id="a_infection" value="0.10" min="0" max="1">
+      </label>
+      <label>Fatigue risk:
+        <input type="number" step="0.01" id="a_fatigue" value="0.20" min="0" max="1">
+      </label>
+      <label>Nausea risk:
+        <input type="number" step="0.01" id="a_nausea" value="0.05" min="0" max="1">
+      </label>
+
+      <h2>Treatment B</h2>
+      <label>Infection risk:
+        <input type="number" step="0.01" id="b_infection" value="0.15" min="0" max="1">
+      </label>
+      <label>Fatigue risk:
+        <input type="number" step="0.01" id="b_fatigue" value="0.15" min="0" max="1">
+      </label>
+      <label>Nausea risk:
+        <input type="number" step="0.01" id="b_nausea" value="0.10" min="0" max="1">
+      </label>
+
+      <button type="button" onclick="calculate()">Calculate Probabilities</button>
+    </form>
+
+    <div id="results">
+      <h2>Results</h2>
+      <p id="output">Results will appear here.</p>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
