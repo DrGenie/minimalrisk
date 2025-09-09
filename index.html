@@ -1,46 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>MS Treatment Minimal Risk Calculator</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal Risks Decision Aid Tool for MS Treatments in PCTs</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>MS Treatment Minimal Risk Calculator</h1>
-    <p>Enter risk levels (0–1) for each treatment. The tool calculates the probability of choosing each option.</p>
+    <div class="container">
+        <h1>Minimal Risks Decision Aid Tool for MS Treatments in Pragmatic Clinical Trials (PCTs)</h1>
+        
+        <div class="section">
+            <h2>Background</h2>
+            <p>This tool is based on a simulated discrete choice experiment (DCE) survey with 400 patients with multiple sclerosis (MS). The DCE used a Bayesian D-efficient design to generate choice tasks involving two hypothetical treatment alternatives and a status quo option (risks if not participating in the PCT). The risks considered were selected by an advisory committee as important to patients.</p>
+            <p>Risks attributes:</p>
+            <ul>
+                <li><strong>Serious Infection Risk:</strong> Low (1%), Medium (3%), High (5%)</li>
+                <li><strong>Neurological Side Effects Risk:</strong> Low (0.5%), Medium (2%), High (4%)</li>
+                <li><strong>Hospitalization Risk per Year:</strong> Low (0.1), Medium (0.3), High (0.5)</li>
+            </ul>
+            <p>A multinomial logit model was estimated to derive preference weights. The status quo represents the risks of the current treatment or no participation.</p>
+            <p class="explanation">Sample size determined using power analysis methods (DOI: 10.1007/s40271-015-0118-z).</p>
+        </div>
 
-    <form id="risk-form">
-      <h2>Treatment A</h2>
-      <label>Infection risk:
-        <input type="number" step="0.01" id="a_infection" value="0.10" min="0" max="1">
-      </label>
-      <label>Fatigue risk:
-        <input type="number" step="0.01" id="a_fatigue" value="0.20" min="0" max="1">
-      </label>
-      <label>Nausea risk:
-        <input type="number" step="0.01" id="a_nausea" value="0.05" min="0" max="1">
-      </label>
+        <div class="section">
+            <h2>Estimated Preference Weights</h2>
+            <p>From the simulated DCE analysis (n=400 patients, 8 choice tasks each):</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Estimate</th>
+                    <th>Standard Error</th>
+                </tr>
+                <tr>
+                    <td>Alternative Specific Constant (ASC) for experimental treatments</td>
+                    <td>0.10</td>
+                    <td>0.05</td>
+                </tr>
+                <tr>
+                    <td>Beta for Serious Infection Risk (per level increase)</td>
+                    <td>-1.00</td>
+                    <td>0.10</td>
+                </tr>
+                <tr>
+                    <td>Beta for Neurological Side Effects Risk (per level increase)</td>
+                    <td>-1.50</td>
+                    <td>0.15</td>
+                </tr>
+                <tr>
+                    <td>Beta for Hospitalization Risk per Year (per level increase)</td>
+                    <td>-2.00</td>
+                    <td>0.20</td>
+                </tr>
+            </table>
+            <p class="explanation">Negative betas indicate aversion to higher risk levels. The model explains patient preferences for lower risks.</p>
+        </div>
 
-      <h2>Treatment B</h2>
-      <label>Infection risk:
-        <input type="number" step="0.01" id="b_infection" value="0.15" min="0" max="1">
-      </label>
-      <label>Fatigue risk:
-        <input type="number" step="0.01" id="b_fatigue" value="0.15" min="0" max="1">
-      </label>
-      <label>Nausea risk:
-        <input type="number" step="0.01" id="b_nausea" value="0.10" min="0" max="1">
-      </label>
+        <div class="section">
+            <h2>Input Treatment Profiles</h2>
+            <p>Specify the risk levels for two hypothetical MS treatments (A and B) to be compared in a PCT.</p>
+            <div class="treatments">
+                <div class="treatment">
+                    <h3>Treatment A</h3>
+                    <div class="input-group">
+                        <label for="serious-infection-a">Serious Infection Risk:</label>
+                        <select id="serious-infection-a">
+                            <option value="0">Low (1%)</option>
+                            <option value="1">Medium (3%)</option>
+                            <option value="2">High (5%)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="neurological-side-effects-a">Neurological Side Effects Risk:</label>
+                        <select id="neurological-side-effects-a">
+                            <option value="0">Low (0.5%)</option>
+                            <option value="1">Medium (2%)</option>
+                            <option value="2">High (4%)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="hospitalization-per-year-a">Hospitalization Risk per Year:</label>
+                        <select id="hospitalization-per-year-a">
+                            <option value="0">Low (0.1)</option>
+                            <option value="1">Medium (0.3)</option>
+                            <option value="2">High (0.5)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="treatment">
+                    <h3>Treatment B</h3>
+                    <div class="input-group">
+                        <label for="serious-infection-b">Serious Infection Risk:</label>
+                        <select id="serious-infection-b">
+                            <option value="0">Low (1%)</option>
+                            <option value="1">Medium (3%)</option>
+                            <option value="2">High (5%)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="neurological-side-effects-b">Neurological Side Effects Risk:</label>
+                        <select id="neurological-side-effects-b">
+                            <option value="0">Low (0.5%)</option>
+                            <option value="1">Medium (2%)</option>
+                            <option value="2">High (4%)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="hospitalization-per-year-b">Hospitalization Risk per Year:</label>
+                        <select id="hospitalization-per-year-b">
+                            <option value="0">Low (0.1)</option>
+                            <option value="1">Medium (0.3)</option>
+                            <option value="2">High (0.5)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button onclick="calculateProbabilities()">Calculate Choice Probabilities</button>
+        </div>
 
-      <button type="button" onclick="calculate()">Calculate Probabilities</button>
-    </form>
+        <div class="section results" id="results" style="display: none;">
+            <h2>Choice Probabilities</h2>
+            <p>Based on patient preferences, the estimated probabilities of choosing each option are:</p>
+            <div>
+                <p>Treatment A: <span class="prob" id="probA">0%</span></p>
+                <p>Treatment B: <span class="prob" id="probB">0%</span></p>
+                <p>Status Quo: <span class="prob" id="probSQ">0%</span></p>
+            </div>
+            <p class="explanation" id="interpretation"></p>
+            <div id="chart-container">
+                <canvas id="probChart"></canvas>
+            </div>
+        </div>
 
-    <div id="results">
-      <h2>Results</h2>
-      <p id="output">Results will appear here.</p>
+        <div class="reference">
+            <p>This tool is for research and IRB use to assess minimal risks in MS PCTs. Developed based on simulated DCE results. For details, see DOI: 10.1007/s40271-015-0118-z for sample size determination.</p>
+        </div>
     </div>
-  </div>
-  <script src="script.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
