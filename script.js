@@ -1,33 +1,87 @@
-function calculate() {
-  // Retrieve inputs
-  const a_infection = parseFloat(document.getElementById("a_infection").value);
-  const a_fatigue   = parseFloat(document.getElementById("a_fatigue").value);
-  const a_nausea    = parseFloat(document.getElementById("a_nausea").value);
+let chart;
 
-  const b_infection = parseFloat(document.getElementById("b_infection").value);
-  const b_fatigue   = parseFloat(document.getElementById("b_fatigue").value);
-  const b_nausea    = parseFloat(document.getElementById("b_nausea").value);
+function calculateProbabilities() {
+    // Get levels (0,1,2) with self-explanatory names
+    const seriousInfectionLevelA = parseFloat(document.getElementById('serious-infection-a').value);
+    const neurologicalSideEffectsLevelA = parseFloat(document.getElementById('neurological-side-effects-a').value);
+    const hospitalizationPerYearLevelA = parseFloat(document.getElementById('hospitalization-per-year-a').value);
 
-  // Simple linear utility function (risk lowers utility)
-  const beta = -2.0;
-  const Ua = beta * (a_infection + a_fatigue + a_nausea);
-  const Ub = beta * (b_infection + b_fatigue + b_nausea);
-  const Uq = 0; // baseline for status quo
+    const seriousInfectionLevelB = parseFloat(document.getElementById('serious-infection-b').value);
+    const neurologicalSideEffectsLevelB = parseFloat(document.getElementById('neurological-side-effects-b').value);
+    const hospitalizationPerYearLevelB = parseFloat(document.getElementById('hospitalization-per-year-b').value);
 
-  // Multinomial logit probabilities
-  const expUa = Math.exp(Ua);
-  const expUb = Math.exp(Ub);
-  const expUq = Math.exp(Uq);
+    // Parameters with self-explanatory names
+    const alternativeSpecificConstant = 0.1;
+    const betaSeriousInfection = -1.0;
+    const betaNeurologicalSideEffects = -1.5;
+    const betaHospitalizationPerYear = -2.0;
 
-  const denom = expUa + expUb + expUq;
-  const Pa = (expUa / denom).toFixed(2);
-  const Pb = (expUb / denom).toFixed(2);
-  const Pq = (expUq / denom).toFixed(2);
+    // Utilities
+    const utilityA = alternativeSpecificConstant + 
+                     betaSeriousInfection * seriousInfectionLevelA + 
+                     betaNeurologicalSideEffects * neurologicalSideEffectsLevelA + 
+                     betaHospitalizationPerYear * hospitalizationPerYearLevelA;
+    const utilityB = alternativeSpecificConstant + 
+                     betaSeriousInfection * seriousInfectionLevelB + 
+                     betaNeurologicalSideEffects * neurologicalSideEffectsLevelB + 
+                     betaHospitalizationPerYear * hospitalizationPerYearLevelB;
+    const utilityStatusQuo = 0;
 
-  // Display results
-  document.getElementById("output").innerHTML = `
-    Treatment A: <b>${Pa}</b><br>
-    Treatment B: <b>${Pb}</b><br>
-    Status Quo: <b>${Pq}</b>
-  `;
+    // Exponentials
+    const expUtilityA = Math.exp(utilityA);
+    const expUtilityB = Math.exp(utilityB);
+    const expUtilityStatusQuo = Math.exp(utilityStatusQuo); // 1
+
+    const denominator = expUtilityA + expUtilityB + expUtilityStatusQuo;
+
+    const probabilityA = (expUtilityA / denominator) * 100;
+    const probabilityB = (expUtilityB / denominator) * 100;
+    const probabilityStatusQuo = (expUtilityStatusQuo / denominator) * 100;
+
+    // Display
+    document.getElementById('probA').textContent = probabilityA.toFixed(1) + '%';
+    document.getElementById('probB').textContent = probabilityB.toFixed(1) + '%';
+    document.getElementById('probSQ').textContent = probabilityStatusQuo.toFixed(1) + '%';
+
+    // Interpretation
+    let interpretationText = '';
+    if (probabilityA > probabilityStatusQuo && probabilityA > probabilityB) {
+        interpretationText = 'Patients are most likely to choose Treatment A over B and status quo, indicating minimal risks for Treatment A in this PCT.';
+    } else if (probabilityB > probabilityStatusQuo && probabilityB > probabilityA) {
+        interpretationText = 'Patients are most likely to choose Treatment B over A and status quo, indicating minimal risks for Treatment B in this PCT.';
+    } else if (probabilityStatusQuo > probabilityA && probabilityStatusQuo > probabilityB) {
+        interpretationText = 'Patients prefer status quo, suggesting neither treatment offers minimal risks compared to current options.';
+    } else {
+        interpretationText = 'Probabilities are mixed; further evaluation recommended.';
+    }
+    document.getElementById('interpretation').textContent = interpretationText;
+
+    // Chart
+    const ctx = document.getElementById('probChart').getContext('2d');
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Treatment A', 'Treatment B', 'Status Quo'],
+            datasets: [{
+                label: 'Choice Probability (%)',
+                data: [probabilityA, probabilityB, probabilityStatusQuo],
+                backgroundColor: ['#3498db', '#e74c3c', '#95a5a6'],
+                borderColor: ['#2980b9', '#c0392b', '#7f8c8d'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    document.getElementById('results').style.display = 'block';
 }
