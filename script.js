@@ -1,30 +1,35 @@
 let chart;
 
 function calculateProbabilities() {
-    // Get levels (0,1,2) with self-explanatory names
-    const seriousInfectionLevelA = parseFloat(document.getElementById('serious-infection-a').value);
-    const neurologicalSideEffectsLevelA = parseFloat(document.getElementById('neurological-side-effects-a').value);
-    const hospitalizationPerYearLevelA = parseFloat(document.getElementById('hospitalization-per-year-a').value);
+    // Get levels (percentages) with self-explanatory names
+    const gastrointestinalSymptomsLevelA = parseFloat(document.getElementById('gastrointestinal-symptoms-a').value);
+    const fluLikeSymptomsLevelA = parseFloat(document.getElementById('flu-like-symptoms-a').value);
+    const infectionLevelA = parseFloat(document.getElementById('infection-a').value);
+    const lifeThreateningEventLevelA = parseFloat(document.getElementById('life-threatening-event-a').value);
 
-    const seriousInfectionLevelB = parseFloat(document.getElementById('serious-infection-b').value);
-    const neurologicalSideEffectsLevelB = parseFloat(document.getElementById('neurological-side-effects-b').value);
-    const hospitalizationPerYearLevelB = parseFloat(document.getElementById('hospitalization-per-year-b').value);
+    const gastrointestinalSymptomsLevelB = parseFloat(document.getElementById('gastrointestinal-symptoms-b').value);
+    const fluLikeSymptomsLevelB = parseFloat(document.getElementById('flu-like-symptoms-b').value);
+    const infectionLevelB = parseFloat(document.getElementById('infection-b').value);
+    const lifeThreateningEventLevelB = parseFloat(document.getElementById('life-threatening-event-b').value);
 
-    // Parameters with self-explanatory names
+    // Parameters with self-explanatory names (betas per %)
     const alternativeSpecificConstant = 0.1;
-    const betaSeriousInfection = -1.0;
-    const betaNeurologicalSideEffects = -1.5;
-    const betaHospitalizationPerYear = -2.0;
+    const betaGastrointestinalSymptoms = -0.424;
+    const betaFluLikeSymptoms = -0.227;
+    const betaInfection = -0.328;
+    const betaLifeThreateningEvent = -115.0;
 
     // Utilities
     const utilityA = alternativeSpecificConstant + 
-                     betaSeriousInfection * seriousInfectionLevelA + 
-                     betaNeurologicalSideEffects * neurologicalSideEffectsLevelA + 
-                     betaHospitalizationPerYear * hospitalizationPerYearLevelA;
+                     betaGastrointestinalSymptoms * gastrointestinalSymptomsLevelA + 
+                     betaFluLikeSymptoms * fluLikeSymptomsLevelA + 
+                     betaInfection * infectionLevelA + 
+                     betaLifeThreateningEvent * lifeThreateningEventLevelA;
     const utilityB = alternativeSpecificConstant + 
-                     betaSeriousInfection * seriousInfectionLevelB + 
-                     betaNeurologicalSideEffects * neurologicalSideEffectsLevelB + 
-                     betaHospitalizationPerYear * hospitalizationPerYearLevelB;
+                     betaGastrointestinalSymptoms * gastrointestinalSymptomsLevelB + 
+                     betaFluLikeSymptoms * fluLikeSymptomsLevelB + 
+                     betaInfection * infectionLevelB + 
+                     betaLifeThreateningEvent * lifeThreateningEventLevelB;
     const utilityStatusQuo = 0;
 
     // Exponentials
