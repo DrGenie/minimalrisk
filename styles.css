@@ -1,51 +1,110 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f7fb;
-  margin: 0;
-  padding: 20px;
-  color: #333;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+    color: #333;
 }
-
 .container {
-  max-width: 600px;
-  margin: auto;
-  background: #fff;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
-
-h1, h2 {
-  color: #0b1b3f;
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
 }
-
-form label {
-  display: block;
-  margin: 8px 0;
+h2 {
+    color: #34495e;
 }
-
-input[type="number"] {
-  width: 80px;
-  margin-left: 10px;
+.section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border-left: 4px solid #3498db;
+    background-color: #ecf0f1;
 }
-
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+th {
+    background-color: #3498db;
+    color: white;
+}
+.input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #2c3e50;
+}
+select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+.treatments {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+.treatment {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    background: #fff;
+}
 button {
-  margin-top: 15px;
-  padding: 10px 15px;
-  background: #0b1b3f;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 20px auto;
+    display: block;
 }
-
 button:hover {
-  background: #1d2a6d;
+    background-color: #2980b9;
 }
-
-#results {
-  margin-top: 20px;
-  padding: 10px;
-  background: #eef4ff;
-  border-radius: 8px;
+.results {
+    text-align: center;
+    margin-top: 20px;
+}
+.prob {
+    font-size: 24px;
+    font-weight: bold;
+    color: #27ae60;
+}
+#chart-container {
+    position: relative;
+    height: 400px;
+    margin: 20px 0;
+}
+.reference {
+    font-size: 14px;
+    color: #7f8c8d;
+    text-align: center;
+    margin-top: 20px;
+}
+.explanation {
+    font-style: italic;
+    color: #555;
 }
