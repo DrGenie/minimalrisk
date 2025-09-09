@@ -13,48 +13,53 @@
         
         <div class="section">
             <h2>Background</h2>
-            <p>This tool is based on a simulated discrete choice experiment (DCE) survey with 400 patients with multiple sclerosis (MS). The DCE used a Bayesian D-efficient design to generate choice tasks involving two hypothetical treatment alternatives and a status quo option (risks if not participating in the PCT). The risks considered were selected by an advisory committee as important to patients.</p>
-            <p>Risks attributes:</p>
+            <p>This tool is based on a discrete choice experiment (DCE) from a study evaluating patient preferences for relapsing-remitting multiple sclerosis (RRMS) treatments (DOI: 10.2147/PPA.S306498). The DCE involved 150 patients choosing between hypothetical treatments with varying risk levels. A hierarchical Bayesian model was used to derive preference weights. Relative importance values were used to calculate betas for risk attributes, assuming linear coding based on percentage levels.</p>
+            <p>Risk attributes and levels (derived from the study):</p>
             <ul>
-                <li><strong>Serious Infection Risk:</strong> Low (1%), Medium (3%), High (5%)</li>
-                <li><strong>Neurological Side Effects Risk:</strong> Low (0.5%), Medium (2%), High (4%)</li>
-                <li><strong>Hospitalization Risk per Year:</strong> Low (0.1), Medium (0.3), High (0.5)</li>
+                <li><strong>Risk of gastrointestinal symptoms:</strong> &lt;1% (0.5%), 10%, 25%</li>
+                <li><strong>Risk of flu-like symptoms:</strong> &lt;1% (0.5%), 30%, 70%</li>
+                <li><strong>Risk of infection:</strong> 20%, 45%, 80%</li>
+                <li><strong>Risk of life-threatening event:</strong> 0%, 0.01%, 0.1%</li>
             </ul>
-            <p>A multinomial logit model was estimated to derive preference weights. The status quo represents the risks of the current treatment or no participation.</p>
-            <p class="explanation">Sample size determined using power analysis methods.</p>
+            <p>The status quo represents the risks if not participating in the PCT (utility = 0). Sample size aligns with power analysis methods (DOI: 10.1007/s40271-015-0118-z).</p>
         </div>
 
         <div class="section">
             <h2>Estimated Preference Weights</h2>
-            <p>From the simulated DCE analysis (n=400 patients, 8 choice tasks each):</p>
+            <p>From the DCE analysis (n=150 patients):</p>
             <table>
                 <tr>
                     <th>Parameter</th>
-                    <th>Estimate</th>
-                    <th>Standard Error</th>
+                    <th>Estimate (Beta per %)</th>
+                    <th>Relative Importance (%)</th>
                 </tr>
                 <tr>
                     <td>Alternative Specific Constant (ASC) for experimental treatments</td>
                     <td>0.10</td>
-                    <td>0.05</td>
+                    <td>N/A</td>
                 </tr>
                 <tr>
-                    <td>Beta for Serious Infection Risk (per level increase)</td>
-                    <td>-1.00</td>
-                    <td>0.10</td>
+                    <td>Beta for risk of gastrointestinal symptoms</td>
+                    <td>-0.424</td>
+                    <td>10.6 (assumed)</td>
                 </tr>
                 <tr>
-                    <td>Beta for Neurological Side Effects Risk (per level increase)</td>
-                    <td>-1.50</td>
-                    <td>0.15</td>
+                    <td>Beta for risk of flu-like symptoms</td>
+                    <td>-0.227</td>
+                    <td>15.9</td>
                 </tr>
                 <tr>
-                    <td>Beta for Hospitalization Risk per Year (per level increase)</td>
-                    <td>-2.00</td>
-                    <td>0.20</td>
+                    <td>Beta for risk of infection</td>
+                    <td>-0.328</td>
+                    <td>19.7</td>
+                </tr>
+                <tr>
+                    <td>Beta for risk of life-threatening event</td>
+                    <td>-115.0</td>
+                    <td>11.5</td>
                 </tr>
             </table>
-            <p class="explanation">Negative betas indicate aversion to higher risk levels. The model explains patient preferences for lower risks.</p>
+            <p class="explanation">Negative betas indicate aversion to higher risk levels. Betas derived from relative importance and level ranges.</p>
         </div>
 
         <div class="section">
@@ -64,54 +69,70 @@
                 <div class="treatment">
                     <h3>Treatment A</h3>
                     <div class="input-group">
-                        <label for="serious-infection-a">Serious Infection Risk:</label>
-                        <select id="serious-infection-a">
-                            <option value="0">Low (1%)</option>
-                            <option value="1">Medium (3%)</option>
-                            <option value="2">High (5%)</option>
+                        <label for="gastrointestinal-symptoms-a">Risk of Gastrointestinal Symptoms (%):</label>
+                        <select id="gastrointestinal-symptoms-a">
+                            <option value="0.5">&lt;1% (0.5%)</option>
+                            <option value="10">10%</option>
+                            <option value="25">25%</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="neurological-side-effects-a">Neurological Side Effects Risk:</label>
-                        <select id="neurological-side-effects-a">
-                            <option value="0">Low (0.5%)</option>
-                            <option value="1">Medium (2%)</option>
-                            <option value="2">High (4%)</option>
+                        <label for="flu-like-symptoms-a">Risk of Flu-like Symptoms (%):</label>
+                        <select id="flu-like-symptoms-a">
+                            <option value="0.5">&lt;1% (0.5%)</option>
+                            <option value="30">30%</option>
+                            <option value="70">70%</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="hospitalization-per-year-a">Hospitalization Risk per Year:</label>
-                        <select id="hospitalization-per-year-a">
-                            <option value="0">Low (0.1)</option>
-                            <option value="1">Medium (0.3)</option>
-                            <option value="2">High (0.5)</option>
+                        <label for="infection-a">Risk of Infection (%):</label>
+                        <select id="infection-a">
+                            <option value="20">20%</option>
+                            <option value="45">45%</option>
+                            <option value="80">80%</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="life-threatening-event-a">Risk of Life-threatening Event (%):</label>
+                        <select id="life-threatening-event-a">
+                            <option value="0">0%</option>
+                            <option value="0.01">0.01%</option>
+                            <option value="0.1">0.1%</option>
                         </select>
                     </div>
                 </div>
                 <div class="treatment">
                     <h3>Treatment B</h3>
                     <div class="input-group">
-                        <label for="serious-infection-b">Serious Infection Risk:</label>
-                        <select id="serious-infection-b">
-                            <option value="0">Low (1%)</option>
-                            <option value="1">Medium (3%)</option>
-                            <option value="2">High (5%)</option>
+                        <label for="gastrointestinal-symptoms-b">Risk of Gastrointestinal Symptoms (%):</label>
+                        <select id="gastrointestinal-symptoms-b">
+                            <option value="0.5">&lt;1% (0.5%)</option>
+                            <option value="10">10%</option>
+                            <option value="25">25%</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="neurological-side-effects-b">Neurological Side Effects Risk:</label>
-                        <select id="neurological-side-effects-b">
-                            <option value="0">Low (0.5%)</option>
-                            <option value="1">Medium (2%)</option>
-                            <option value="2">High (4%)</option>
+                        <label for="flu-like-symptoms-b">Risk of Flu-like Symptoms (%):</label>
+                        <select id="flu-like-symptoms-b">
+                            <option value="0.5">&lt;1% (0.5%)</option>
+                            <option value="30">30%</option>
+                            <option value="70">70%</option>
                         </select>
                     </div>
                     <div class="input-group">
-                        <label for="hospitalization-per-year-b">Hospitalization Risk per Year:</label>
-                        <select id="hospitalization-per-year-b">
-                            <option value="0">Low (0.1)</option>
-                            <option value="1">Medium (0.3)</option>
-                            <option value="2">High (0.5)</option>
+                        <label for="infection-b">Risk of Infection (%):</label>
+                        <select id="infection-b">
+                            <option value="20">20%</option>
+                            <option value="45">45%</option>
+                            <option value="80">80%</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="life-threatening-event-b">Risk of Life-threatening Event (%):</label>
+                        <select id="life-threatening-event-b">
+                            <option value="0">0%</option>
+                            <option value="0.01">0.01%</option>
+                            <option value="0.1">0.1%</option>
                         </select>
                     </div>
                 </div>
@@ -134,7 +155,7 @@
         </div>
 
         <div class="reference">
-            <p>This tool is for research and IRB use to assess minimal risks in MS PCTs. Developed based on simulated DCE results. For details, see DOI: 10.1007/s40271-015-0118-z for sample size determination.</p>
+            <p>This tool is for research and IRB use to assess minimal risks in MS PCTs. Developed based on DCE results from DOI: 10.2147/PPA.S306498. For sample size details, see DOI: 10.1007/s40271-015-0118-z.</p>
         </div>
     </div>
 
